@@ -103,7 +103,7 @@ class HustleApp {
   esc(s) {
     return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
-  jstr(s) { return JSON.stringify(String(s ?? '')); }
+  jstr(s) { return "'" + String(s ?? '').replace(/\\/g, '\\\\').replace(/'/g, "\\'") + "'"; }
 
   // actions
   setTab(tab) { this.setState({ tab }); }
