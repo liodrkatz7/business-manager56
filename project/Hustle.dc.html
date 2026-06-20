@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Hanken Grotesk',sans-serif;-webkit-font-smoothing:antialiased;background:#FBF4E9;color:#161412}
+  input::placeholder{color:#b3ab9c}
+  input:focus,select:focus{outline:none}
+  ::-webkit-scrollbar{width:10px;height:10px}
+  ::-webkit-scrollbar-thumb{background:#dcd3c2;border-radius:99px;border:3px solid #FBF4E9}
+</style>
+</helmet>
+
+<div style="min-height:100vh;background:#FBF4E9">
+
+  <!-- ===== top nav ===== -->
+  <div style="position:sticky;top:0;z-index:20;background:#FBF4E9;border-bottom:2px solid #161412">
+    <div style="max-width:1080px;margin:0 auto;padding:16px 28px;display:flex;align-items:center;justify-content:space-between">
+      <div style="display:flex;align-items:center;gap:28px">
+        <span style="font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;letter-spacing:-.02em">HUSTLE</span>
+        <div style="display:flex;gap:6px">
+          <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="4">
+            <button onClick="{{ t.onClick }}" style="{{ t.style }}">{{ t.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:14px">
+        <div style="text-align:right;line-height:1.1"><div style="font-size:11px;font-weight:700;color:#7a7468;text-transform:uppercase;letter-spacing:.06em">Banked in June</div><div style="font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:800;color:#1F8A4C">{{ totalLabel }}</div></div>
+        <div style="width:34px;height:34px;border-radius:50%;background:#FF5C2B;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff">{{ initial }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="max-width:1080px;margin:0 auto;padding:28px">
+
+    <!-- =================== TODAY =================== -->
+    <sc-if value="{{ isToday }}" hint-placeholder-val="{{ true }}">
+    <div>
+      <!-- goal hero -->
+      <div style="border-radius:18px;padding:28px;color:#fff;margin-bottom:22px;background:{{ accent }}">
+        <div style="font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;opacity:.82;margin-bottom:10px">Keep going, {{ userName }} 🔥</div>
+        <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:16px">
+          <div>
+            <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:52px;font-weight:800;line-height:1;letter-spacing:-.03em">{{ totalLabel }}</div>
+            <div style="font-size:15px;opacity:.85;margin-top:8px">of your {{ goalLabel }} June goal — {{ remainingLabel }} to go</div>
+          </div>
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:58px;font-weight:800;letter-spacing:-.03em">{{ pctLabel }}</div>
+        </div>
+        <div style="height:12px;background:rgba(255,255,255,.25);border-radius:99px;overflow:hidden;margin-top:20px"><div style="height:100%;background:#FFE14D;border-radius:99px;transition:width .4s ease;width:{{ pctWidth }}"></div></div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1.15fr .85fr;gap:20px;margin-bottom:20px">
+        <!-- best ideas -->
+        <div style="background:#fff;border:2px solid #161412;border-radius:16px;padding:22px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+            <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:700">💡 Best ideas right now</div>
+            <button onClick="{{ goIdeas }}" style="font-size:13px;font-weight:700;color:#7a7468;background:none;border:none;cursor:pointer">View all →</button>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <sc-for list="{{ topIdeas }}" as="idea" hint-placeholder-count="3">
+              <div style="display:flex;align-items:center;justify-content:space-between;border-radius:12px;padding:13px 16px;background:{{ idea.tierBg }}">
+                <div><div style="font-size:14px;font-weight:700">{{ idea.name }}</div><div style="font-size:11px;color:#7a7468;font-weight:600">{{ idea.profile }}</div></div>
+                <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;color:{{ idea.tierColor }}">{{ idea.scoreStr }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <!-- skills + banked -->
+        <div style="background:#fff;border:2px solid #161412;border-radius:16px;padding:22px">
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:700;margin-bottom:14px">⚡ Your skills</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px">
+            <sc-for list="{{ skillChips }}" as="s" hint-placeholder-count="5">
+              <span style="{{ s.style }}">{{ s.label }}</span>
+            </sc-for>
+          </div>
+          <div style="margin-top:20px;font-size:12px;font-weight:700;color:#7a7468;text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px">Recently banked</div>
+          <div style="display:flex;flex-direction:column;gap:9px">
+            <sc-for list="{{ recentEarnings }}" as="e" hint-placeholder-count="3">
+              <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:600"><span>{{ e.label }}</span><span style="color:#1F8A4C;font-weight:800">{{ e.amountLabel }}</span></div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+
+      <!-- next move -->
+      <div style="background:#161412;border-radius:16px;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;color:#fff;gap:16px;flex-wrap:wrap">
+        <div><div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#FFE14D;margin-bottom:5px">Next move</div><div style="font-size:16px;font-weight:600">{{ nextMove }}</div></div>
+        <button onClick="{{ goIdeas }}" style="font-family:'Bricolage Grotesque',sans-serif;font-size:14px;font-weight:700;background:#FF5C2B;color:#fff;border:none;padding:11px 20px;border-radius:99px;cursor:pointer">Make a plan →</button>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- =================== SKILLS =================== -->
+    <sc-if value="{{ isSkills }}" hint-placeholder-val="{{ false }}">
+    <div>
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:20px">
+        <div>
+          <h1 style="font-family:'Bricolage Grotesque',sans-serif;font-size:28px;font-weight:800;letter-spacing:-.02em">Skills inventory</h1>
+          <p style="font-size:14px;color:#7a7468;margin-top:4px">Rate what you've got. Opportunities are matched to your strongest skills.</p>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 320px;gap:20px;align-items:start">
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <sc-for list="{{ skillRows }}" as="s" hint-placeholder-count="5">
+            <div style="background:#fff;border:2px solid #161412;border-radius:14px;padding:16px 18px;display:flex;align-items:center;justify-content:space-between;gap:16px">
+              <div style="flex:1">
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+                  <span style="font-size:15px;font-weight:700">{{ s.name }}</span>
+                  <span style="{{ s.badgeStyle }}">{{ s.levelLabel }}</span>
+                </div>
+                <div style="display:flex;gap:5px">
+                  <sc-for list="{{ s.pips }}" as="p" hint-placeholder-count="3">
+                    <button onClick="{{ p.onClick }}" title="Set level" style="width:42px;height:8px;border:none;border-radius:3px;cursor:pointer;padding:0;background:{{ p.bg }}"></button>
+                  </sc-for>
+                </div>
+              </div>
+              <div style="text-align:right"><div style="font-family:'Bricolage Grotesque',sans-serif;font-size:13px;font-weight:700;color:#1F8A4C">{{ s.earnedLabel }}</div><div style="font-size:10px;color:#7a7468;font-weight:600">earned</div></div>
+              <button onClick="{{ s.onRemove }}" title="Remove skill" style="width:30px;height:30px;flex:none;border:2px solid #ECE4D4;background:#fff;color:#b3ab9c;border-radius:9px;font-size:16px;font-weight:800;cursor:pointer;line-height:1" style-hover="border:2px solid #FF5C2B;color:#FF5C2B">×</button>
+            </div>
+          </sc-for>
+
+          <!-- add skill -->
+          <div style="background:#FFF9EE;border:2px dashed #d9cdb4;border-radius:14px;padding:16px 18px;display:flex;align-items:center;gap:12px">
+            <input value="{{ draftSkillName }}" onInput="{{ onSkillName }}" placeholder="Add a skill…" style="flex:1;font-family:inherit;font-size:14px;font-weight:600;background:#fff;border:2px solid #161412;border-radius:10px;padding:10px 12px"/>
+            <button onClick="{{ addSkill }}" style="font-family:'Bricolage Grotesque',sans-serif;font-size:14px;font-weight:700;background:#161412;color:#fff;border:none;padding:11px 18px;border-radius:10px;cursor:pointer">Add</button>
+          </div>
+        </div>
+
+        <!-- matched opps -->
+        <div style="background:#161412;border-radius:16px;padding:22px;color:#fff;position:sticky;top:96px">
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:700;margin-bottom:4px">🎯 Matched opportunities</div>
+          <div style="font-size:12px;color:#a39c8e;margin-bottom:16px">Gigs that fit your skills</div>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <sc-for list="{{ opportunities }}" as="o" hint-placeholder-count="3">
+              <div style="background:#262220;border-radius:12px;padding:14px">
+                <div style="display:flex;justify-content:space-between;align-items:start;gap:8px"><div style="font-size:14px;font-weight:700">{{ o.title }}</div><div style="font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:800;color:#FFE14D">{{ o.payLabel }}</div></div>
+                <div style="font-size:11px;color:#a39c8e;font-weight:600;margin:5px 0 12px">via {{ o.skill }}</div>
+                <button onClick="{{ o.onTake }}" style="width:100%;font-size:13px;font-weight:700;background:#FF5C2B;color:#fff;border:none;padding:9px;border-radius:9px;cursor:pointer">Log as earned →</button>
+              </div>
+            </sc-for>
+            <sc-if value="{{ noOpps }}" hint-placeholder-val="{{ false }}">
+              <div style="font-size:13px;color:#a39c8e;text-align:center;padding:14px 0">Add a skill to unlock matched gigs.</div>
+            </sc-if>
+          </div>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- =================== IDEAS =================== -->
+    <sc-if value="{{ isIdeas }}" hint-placeholder-val="{{ false }}">
+    <div>
+      <div style="margin-bottom:20px">
+        <h1 style="font-family:'Bricolage Grotesque',sans-serif;font-size:28px;font-weight:800;letter-spacing:-.02em">Idea board</h1>
+        <p style="font-size:14px;color:#7a7468;margin-top:4px">Score every idea on reward vs. effort. Tap one to plan the steps.</p>
+      </div>
+
+      <!-- add idea -->
+      <div style="background:#fff;border:2px solid #161412;border-radius:16px;padding:18px;margin-bottom:18px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+        <input value="{{ draftIdeaName }}" onInput="{{ onIdeaName }}" placeholder="New money idea…" style="flex:1;min-width:200px;font-family:inherit;font-size:15px;font-weight:600;background:#FBF4E9;border:2px solid #161412;border-radius:10px;padding:11px 14px"/>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="font-size:12px;font-weight:700;color:#7a7468;text-transform:uppercase;letter-spacing:.05em">Reward</span>
+          <button onClick="{{ rewardDown }}" style="width:30px;height:30px;border:2px solid #161412;background:#fff;border-radius:8px;font-weight:800;cursor:pointer">−</button>
+          <span style="font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;width:18px;text-align:center">{{ draftReward }}</span>
+          <button onClick="{{ rewardUp }}" style="width:30px;height:30px;border:2px solid #161412;background:#fff;border-radius:8px;font-weight:800;cursor:pointer">+</button>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="font-size:12px;font-weight:700;color:#7a7468;text-transform:uppercase;letter-spacing:.05em">Effort</span>
+          <button onClick="{{ effortDown }}" style="width:30px;height:30px;border:2px solid #161412;background:#fff;border-radius:8px;font-weight:800;cursor:pointer">−</button>
+          <span style="font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;width:18px;text-align:center">{{ draftEffort }}</span>
+          <button onClick="{{ effortUp }}" style="width:30px;height:30px;border:2px solid #161412;background:#fff;border-radius:8px;font-weight:800;cursor:pointer">+</button>
+        </div>
+        <button onClick="{{ addIdea }}" style="font-family:'Bricolage Grotesque',sans-serif;font-size:14px;font-weight:700;background:#161412;color:#fff;border:none;padding:12px 22px;border-radius:10px;cursor:pointer">Add idea</button>
+      </div>
+
+      <!-- idea cards -->
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <sc-for list="{{ ideasSorted }}" as="idea" hint-placeholder-count="3">
+          <div style="background:#fff;border:2px solid #161412;border-radius:16px;overflow:hidden">
+            <div onClick="{{ idea.onToggle }}" style="padding:18px 20px;display:flex;align-items:center;gap:18px;cursor:pointer">
+              <div style="width:58px;height:58px;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;flex:none;background:{{ idea.tierBg }}">
+                <span style="font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;line-height:1;color:{{ idea.tierColor }}">{{ idea.scoreStr }}</span>
+                <span style="font-size:9px;font-weight:700;color:{{ idea.tierColor }};text-transform:uppercase;letter-spacing:.05em">score</span>
+              </div>
+              <div style="flex:1">
+                <div style="font-size:17px;font-weight:700">{{ idea.name }}</div>
+                <div style="font-size:12px;color:#7a7468;font-weight:600;margin-top:2px">{{ idea.profile }}</div>
+              </div>
+              <div style="display:flex;gap:20px;align-items:center">
+                <div style="text-align:center"><div style="font-size:10px;font-weight:700;color:#7a7468;text-transform:uppercase">Reward</div><div style="display:flex;gap:3px;margin-top:4px">​<sc-for list="{{ idea.rewardPips }}" as="p" hint-placeholder-count="5"><span style="width:8px;height:8px;border-radius:50%;background:{{ p.bg }}"></span></sc-for></div></div>
+                <div style="text-align:center"><div style="font-size:10px;font-weight:700;color:#7a7468;text-transform:uppercase">Effort</div><div style="display:flex;gap:3px;margin-top:4px"><sc-for list="{{ idea.effortPips }}" as="p" hint-placeholder-count="5"><span style="width:8px;height:8px;border-radius:50%;background:{{ p.bg }}"></span></sc-for></div></div>
+                <div style="font-size:13px;font-weight:700;color:#7a7468">{{ idea.stepSummary }}</div>
+                <button onClick="{{ idea.onRemove }}" title="Delete idea" style="width:30px;height:30px;flex:none;border:2px solid #ECE4D4;background:#fff;color:#b3ab9c;border-radius:9px;font-size:16px;font-weight:800;cursor:pointer;line-height:1" style-hover="border:2px solid #FF5C2B;color:#FF5C2B">×</button>
+                <span style="font-size:18px;color:#7a7468;font-weight:700;transition:transform .2s;display:inline-block;transform:{{ idea.caret }}">›</span>
+              </div>
+            </div>
+            <!-- steps -->
+            <sc-if value="{{ idea.expanded }}" hint-placeholder-val="{{ false }}">
+              <div style="border-top:2px solid #f0e9da;padding:18px 20px;background:#FFFBF3">
+                <div style="font-size:12px;font-weight:700;color:#7a7468;text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px">Action steps</div>
+                <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px">
+                  <sc-for list="{{ idea.steps }}" as="step" hint-placeholder-count="2">
+                    <div style="display:flex;align-items:center;gap:11px">
+                      <div onClick="{{ step.onToggle }}" style="display:flex;align-items:center;gap:11px;cursor:pointer;flex:1">
+                        <span style="width:22px;height:22px;border-radius:7px;border:2px solid #161412;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex:none;background:{{ step.boxBg }};color:{{ step.boxColor }}">{{ step.check }}</span>
+                        <span style="font-size:14px;font-weight:600;color:{{ step.textColor }};text-decoration:{{ step.deco }}">{{ step.text }}</span>
+                      </div>
+                      <button onClick="{{ step.onRemove }}" title="Remove step" style="width:24px;height:24px;flex:none;border:none;background:none;color:#c4bcab;font-size:15px;font-weight:800;cursor:pointer;line-height:1" style-hover="color:#FF5C2B">×</button>
+                    </div>
+                  </sc-for>
+                  <sc-if value="{{ idea.noSteps }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:#a39c8e;font-weight:600">No steps yet — add your first below.</div></sc-if>
+                </div>
+                <div style="display:flex;gap:10px">
+                  <input value="{{ idea.stepDraft }}" onInput="{{ idea.onStepInput }}" placeholder="Add an action step…" style="flex:1;font-family:inherit;font-size:14px;font-weight:600;background:#fff;border:2px solid #161412;border-radius:9px;padding:9px 12px"/>
+                  <button onClick="{{ idea.onAddStep }}" style="font-size:13px;font-weight:700;background:#161412;color:#fff;border:none;padding:9px 16px;border-radius:9px;cursor:pointer">Add step</button>
+                </div>
+              </div>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- =================== PLATFORMS =================== -->
+    <sc-if value="{{ isPlatforms }}" hint-placeholder-val="{{ false }}">
+    <div>
+      <div style="margin-bottom:20px">
+        <h1 style="font-family:'Bricolage Grotesque',sans-serif;font-size:28px;font-weight:800;letter-spacing:-.02em">Platforms</h1>
+        <p style="font-size:14px;color:#7a7468;margin-top:4px">Your shortlist of places to actually make money. Save the links, jump straight in.</p>
+      </div>
+
+      <!-- add platform -->
+      <div style="background:#fff;border:2px solid #161412;border-radius:16px;padding:18px;margin-bottom:18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <input value="{{ draftPlatName }}" onInput="{{ onPlatName }}" placeholder="Platform name" style="width:170px;font-family:inherit;font-size:15px;font-weight:700;background:#FBF4E9;border:2px solid #161412;border-radius:10px;padding:11px 14px"/>
+        <input value="{{ draftPlatUrl }}" onInput="{{ onPlatUrl }}" placeholder="Link (e.g. etsy.com)" style="flex:1;min-width:160px;font-family:inherit;font-size:15px;font-weight:600;background:#FBF4E9;border:2px solid #161412;border-radius:10px;padding:11px 14px"/>
+        <input value="{{ draftPlatNote }}" onInput="{{ onPlatNote }}" placeholder="What for? (optional)" style="flex:1;min-width:160px;font-family:inherit;font-size:14px;font-weight:600;background:#FBF4E9;border:2px solid #161412;border-radius:10px;padding:11px 14px"/>
+        <button onClick="{{ addPlatform }}" style="font-family:'Bricolage Grotesque',sans-serif;font-size:14px;font-weight:700;background:#161412;color:#fff;border:none;padding:12px 22px;border-radius:10px;cursor:pointer">Add link</button>
+      </div>
+
+      <!-- platform grid -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        <sc-for list="{{ platformsList }}" as="p" hint-placeholder-count="4">
+          <div style="background:#fff;border:2px solid #161412;border-radius:16px;padding:18px;display:flex;align-items:center;gap:16px">
+            <div style="width:46px;height:46px;border-radius:12px;flex:none;background:#FFF3D6;display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:#161412">{{ p.initial }}</div>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:16px;font-weight:700">{{ p.name }}</div>
+              <div style="font-size:12px;color:#7a7468;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ p.note }}</div>
+            </div>
+            <a href="{{ p.url }}" target="_blank" rel="noopener" style="font-size:13px;font-weight:700;text-decoration:none;background:#1F8A4C;color:#fff;padding:9px 16px;border-radius:99px;white-space:nowrap">Open ↗</a>
+            <button onClick="{{ p.onRemove }}" title="Remove platform" style="width:30px;height:30px;flex:none;border:2px solid #ECE4D4;background:#fff;color:#b3ab9c;border-radius:9px;font-size:16px;font-weight:800;cursor:pointer;line-height:1" style-hover="border:2px solid #FF5C2B;color:#FF5C2B">×</button>
+          </div>
+        </sc-for>
+      </div>
+      <sc-if value="{{ noPlatforms }}" hint-placeholder-val="{{ false }}"><div style="background:#fff;border:2px dashed #d9cdb4;border-radius:16px;padding:34px;text-align:center;font-size:14px;color:#a39c8e;font-weight:600">No platforms yet — add the first place you want to earn.</div></sc-if>
+    </div>
+    </sc-if>
+
+    <!-- =================== MONEY =================== -->
+    <sc-if value="{{ isMoney }}" hint-placeholder-val="{{ false }}">
+    <div>
+      <div style="margin-bottom:20px">
+        <h1 style="font-family:'Bricolage Grotesque',sans-serif;font-size:28px;font-weight:800;letter-spacing:-.02em">Money</h1>
+        <p style="font-size:14px;color:#7a7468;margin-top:4px">Every dollar you've banked, and how close you are to the goal.</p>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:22px">
+        <div style="background:{{ accent }};border-radius:16px;padding:20px;color:#fff"><div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;opacity:.82">Banked</div><div style="font-family:'Bricolage Grotesque',sans-serif;font-size:30px;font-weight:800;margin-top:6px">{{ totalLabel }}</div></div>
+        <div style="background:#fff;border:2px solid #161412;border-radius:16px;padding:20px"><div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#7a7468">Goal</div><div style="font-family:'Bricolage Grotesque',sans-serif;font-size:30px;font-weight:800;margin-top:6px">{{ goalLabel }}</div></div>
+        <div style="background:#fff;border:2px solid #161412;border-radius:16px;padding:20px"><div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#7a7468">To go</div><div style="font-family:'Bricolage Grotesque',sans-serif;font-size:30px;font-weight:800;margin-top:6px;color:#FF5C2B">{{ remainingLabel }}</div></div>
+      </div>
+
+      <!-- add earning -->
+      <div style="background:#fff;border:2px solid #161412;border-radius:16px;padding:18px;margin-bottom:18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <input value="{{ draftEarnLabel }}" onInput="{{ onEarnLabel }}" placeholder="What did you do?" style="flex:1;min-width:180px;font-family:inherit;font-size:15px;font-weight:600;background:#FBF4E9;border:2px solid #161412;border-radius:10px;padding:11px 14px"/>
+        <select value="{{ draftEarnSkill }}" onChange="{{ onEarnSkill }}" style="font-family:inherit;font-size:14px;font-weight:700;background:#FBF4E9;border:2px solid #161412;border-radius:10px;padding:11px 14px;cursor:pointer">
+          <sc-for list="{{ skillOptions }}" as="o" hint-placeholder-count="4"><option value="{{ o }}">{{ o }}</option></sc-for>
+        </select>
+        <div style="display:flex;align-items:center;background:#FBF4E9;border:2px solid #161412;border-radius:10px;padding:0 14px"><span style="font-weight:800;font-size:15px">$</span><input value="{{ draftEarnAmount }}" onInput="{{ onEarnAmount }}" inputmode="numeric" placeholder="0" style="width:90px;font-family:inherit;font-size:15px;font-weight:700;background:none;border:none;padding:11px 6px"/></div>
+        <button onClick="{{ addEarning }}" style="font-family:'Bricolage Grotesque',sans-serif;font-size:14px;font-weight:700;background:#1F8A4C;color:#fff;border:none;padding:12px 22px;border-radius:10px;cursor:pointer">Bank it</button>
+      </div>
+
+      <!-- earnings log -->
+      <div style="background:#fff;border:2px solid #161412;border-radius:16px;overflow:hidden">
+        <sc-for list="{{ earningsList }}" as="e" hint-placeholder-count="4">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:15px 20px;border-bottom:1px solid {{ e.border }}">
+            <div style="display:flex;align-items:center;gap:14px">
+              <div style="width:38px;height:38px;border-radius:10px;background:#FFF3D6;display:flex;align-items:center;justify-content:center;font-size:16px">{{ e.emoji }}</div>
+              <div><div style="font-size:15px;font-weight:700">{{ e.label }}</div><div style="font-size:12px;color:#7a7468;font-weight:600">{{ e.skill }} · {{ e.date }}</div></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:14px">
+              <span style="font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:800;color:#1F8A4C">{{ e.amountLabel }}</span>
+              <button onClick="{{ e.onRemove }}" title="Remove" style="width:28px;height:28px;flex:none;border:2px solid #ECE4D4;background:#fff;color:#b3ab9c;border-radius:8px;font-size:15px;font-weight:800;cursor:pointer;line-height:1" style-hover="border:2px solid #FF5C2B;color:#FF5C2B">×</button>
+            </div>
+          </div>
+        </sc-for>
+        <sc-if value="{{ noEarnings }}" hint-placeholder-val="{{ false }}"><div style="padding:30px;text-align:center;font-size:14px;color:#a39c8e;font-weight:600">Nothing banked yet. Log your first win above.</div></sc-if>
+      </div>
+    </div>
+    </sc-if>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1080,&quot;height&quot;:860},&quot;accentColor&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#1F3FE0&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;goalAmount&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:5000,&quot;min&quot;:500,&quot;max&quot;:20000,&quot;step&quot;:500,&quot;tsType&quot;:&quot;number&quot;},&quot;userName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Maya&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  state = {
+    tab: 'today',
+    skills: [
+      { name: 'Web design', level: 3, earned: 450 },
+      { name: 'Public speaking', level: 3, earned: 0 },
+      { name: 'Copywriting', level: 2, earned: 300 },
+      { name: 'Photography', level: 1, earned: 180 },
+    ],
+    ideas: [
+      { id: 'i1', name: 'Notion template shop', reward: 5, effort: 3, steps: [
+        { text: 'Design 3 starter templates', done: true },
+        { text: 'Set up Gumroad store', done: false },
+        { text: 'Write launch tweet thread', done: false },
+      ] },
+      { id: 'i2', name: 'Copywriting retainer', reward: 5, effort: 4, steps: [
+        { text: 'List 10 dream clients', done: false },
+      ] },
+      { id: 'i3', name: 'Brand photo packages', reward: 3, effort: 3, steps: [] },
+    ],
+    earnings: [
+      { id: 'e1', label: 'Logo refresh', skill: 'Web design', amount: 450, date: 'Jun 12' },
+      { id: 'e2', label: 'Product copy', skill: 'Copywriting', amount: 300, date: 'Jun 9' },
+      { id: 'e3', label: 'Headshots', skill: 'Photography', amount: 180, date: 'Jun 4' },
+    ],
+    platforms: [
+      { id: 'p1', name: 'Gumroad', url: 'https://gumroad.com', note: 'Sell digital products & templates' },
+      { id: 'p2', name: 'Upwork', url: 'https://upwork.com', note: 'Freelance client work' },
+      { id: 'p3', name: 'Fiverr', url: 'https://fiverr.com', note: 'Productized gigs' },
+      { id: 'p4', name: 'Substack', url: 'https://substack.com', note: 'Paid newsletter' },
+    ],
+    expanded: 'i1',
+    draft: { skillName: '', ideaName: '', reward: 4, effort: 2, earnLabel: '', earnSkill: 'Web design', earnAmount: '', stepText: {}, platName: '', platUrl: '', platNote: '' },
+    seq: 100,
+  };
+
+  // ---- helpers ----
+  fmt(n) { return '$' + Math.round(n).toLocaleString('en-US'); }
+  setDraft(k, v) { this.setState(s => ({ draft: { ...s.draft, [k]: v } })); }
+  nextId(p) { const n = this.state.seq + 1; this.setState({ seq: n }); return p + n; }
+
+  levelMeta(lvl) {
+    if (lvl >= 3) return { label: 'Pro', bg: '#161412', color: '#fff' };
+    if (lvl === 2) return { label: 'Mid', bg: '#FFE14D', color: '#161412' };
+    return { label: 'New', bg: '#F1ECE0', color: '#7a7468' };
+  }
+  scoreOf(r, e) { return Math.round(((r / 5) * 0.6 + ((6 - e) / 5) * 0.4) * 100) / 10; }
+  tier(score, accent) {
+    if (score >= 8) return { bg: '#E6F7EC', color: '#1F8A4C' };
+    if (score >= 6.5) return { bg: '#FFF3D6', color: accent };
+    return { bg: '#FCE9E1', color: '#FF5C2B' };
+  }
+  word(n) { return n <= 2 ? 'low' : n === 3 ? 'medium' : 'high'; }
+
+  // ---- actions ----
+  addSkill = () => {
+    const name = this.state.draft.skillName.trim();
+    if (!name) return;
+    this.setState(s => ({ skills: [...s.skills, { name, level: 1, earned: 0 }], draft: { ...s.draft, skillName: '' } }));
+  };
+  setLevel = (idx, lvl) => this.setState(s => ({ skills: s.skills.map((sk, i) => i === idx ? { ...sk, level: lvl } : sk) }));
+  removeSkill = (idx) => this.setState(s => ({ skills: s.skills.filter((_, i) => i !== idx) }));
+
+  bump = (k, d) => this.setState(s => ({ draft: { ...s.draft, [k]: Math.max(1, Math.min(5, s.draft[k] + d)) } }));
+  addIdea = () => {
+    const d = this.state.draft; const name = d.ideaName.trim();
+    if (!name) return;
+    const id = this.nextId('i');
+    this.setState(s => ({ ideas: [...s.ideas, { id, name, reward: d.reward, effort: d.effort, steps: [] }], draft: { ...s.draft, ideaName: '', reward: 4, effort: 2 }, expanded: id }));
+  };
+  toggleExpand = (id) => this.setState(s => ({ expanded: s.expanded === id ? null : id }));
+  removeIdea = (id) => this.setState(s => ({ ideas: s.ideas.filter(i => i.id !== id), expanded: s.expanded === id ? null : s.expanded }));
+  removeStep = (id, i) => this.setState(s => ({ ideas: s.ideas.map(idea => idea.id === id ? { ...idea, steps: idea.steps.filter((_, j) => j !== i) } : idea) }));
+  removeEarning = (id) => this.setState(s => {
+    const gone = s.earnings.find(e => e.id === id);
+    return {
+      earnings: s.earnings.filter(e => e.id !== id),
+      skills: gone ? s.skills.map(sk => sk.name === gone.skill ? { ...sk, earned: Math.max(0, sk.earned - gone.amount) } : sk) : s.skills,
+    };
+  });
+  toggleStep = (id, i) => this.setState(s => ({ ideas: s.ideas.map(idea => idea.id === id ? { ...idea, steps: idea.steps.map((st, j) => j === i ? { ...st, done: !st.done } : st) } : idea) }));
+  setStepDraft = (id, v) => this.setState(s => ({ draft: { ...s.draft, stepText: { ...s.draft.stepText, [id]: v } } }));
+  addStep = (id) => {
+    const t = (this.state.draft.stepText[id] || '').trim();
+    if (!t) return;
+    this.setState(s => ({ ideas: s.ideas.map(idea => idea.id === id ? { ...idea, steps: [...idea.steps, { text: t, done: false }] } : idea), draft: { ...s.draft, stepText: { ...s.draft.stepText, [id]: '' } } }));
+  };
+
+  addEarning = () => {
+    const d = this.state.draft; const label = d.earnLabel.trim(); const amt = parseFloat(d.earnAmount);
+    if (!label || !amt || amt <= 0) return;
+    const date = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    this.setState(s => ({
+      earnings: [{ id: this.nextId('e'), label, skill: d.earnSkill, amount: amt, date }, ...s.earnings],
+      skills: s.skills.map(sk => sk.name === d.earnSkill ? { ...sk, earned: sk.earned + amt } : sk),
+      draft: { ...s.draft, earnLabel: '', earnAmount: '' },
+    }));
+  };
+  logOpp = (title, skill, pay) => {
+    const date = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    this.setState(s => ({
+      earnings: [{ id: this.nextId('e'), label: title, skill, amount: pay, date }, ...s.earnings],
+      skills: s.skills.map(sk => sk.name === skill ? { ...sk, earned: sk.earned + pay } : sk),
+      tab: 'money',
+    }));
+  };
+
+  addPlatform = () => {
+    const d = this.state.draft;
+    const name = d.platName.trim();
+    let url = d.platUrl.trim();
+    if (!name || !url) return;
+    if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
+    this.setState(s => ({ platforms: [...s.platforms, { id: this.nextId('p'), name, url, note: d.platNote.trim() }], draft: { ...s.draft, platName: '', platUrl: '', platNote: '' } }));
+  };
+  removePlatform = (id) => this.setState(s => ({ platforms: s.platforms.filter(p => p.id !== id) }));
+
+  renderVals() {
+    const accent = this.props.accentColor ?? '#1F3FE0';
+    const userName = this.props.userName ?? 'Maya';
+    const goal = this.props.goalAmount ?? 5000;
+    const total = this.state.earnings.reduce((a, e) => a + e.amount, 0);
+    const pct = Math.max(0, Math.min(100, Math.round((total / goal) * 100)));
+    const remaining = Math.max(0, goal - total);
+
+    const tabDefs = [['today', 'Today'], ['skills', 'Skills'], ['ideas', 'Ideas'], ['platforms', 'Platforms'], ['money', 'Money']];
+    const tabs = tabDefs.map(([key, label]) => {
+      const active = this.state.tab === key;
+      return { label, onClick: () => this.setState({ tab: key }),
+        style: `font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;border:none;border-radius:99px;padding:7px 16px;background:${active ? '#161412' : 'transparent'};color:${active ? '#fff' : '#7a7468'}` };
+    });
+
+    const skillNames = this.state.skills.map(s => s.name);
+
+    // ideas with computed score
+    const decorate = (idea) => {
+      const score = this.scoreOf(idea.reward, idea.effort);
+      const t = this.tier(score, accent);
+      const done = idea.steps.filter(s => s.done).length;
+      const stepObjs = idea.steps.map((st, i) => ({
+        text: st.text, onToggle: () => this.toggleStep(idea.id, i),
+        onRemove: (e) => { e.stopPropagation(); this.removeStep(idea.id, i); },
+        boxBg: st.done ? '#1F8A4C' : '#fff', boxColor: st.done ? '#fff' : 'transparent',
+        check: st.done ? '✓' : '', textColor: st.done ? '#a39c8e' : '#161412', deco: st.done ? 'line-through' : 'none',
+      }));
+      const pips = (val, on) => [1,2,3,4,5].map(i => ({ bg: i <= val ? on : '#EDE6D7' }));
+      return {
+        id: idea.id, name: idea.name, scoreStr: score.toFixed(1),
+        tierBg: t.bg, tierColor: t.color,
+        profile: this.word(idea.reward) + ' reward · ' + this.word(idea.effort) + ' effort',
+        rewardPips: pips(idea.reward, accent), effortPips: pips(idea.effort, '#FF5C2B'),
+        expanded: this.state.expanded === idea.id,
+        caret: this.state.expanded === idea.id ? 'rotate(90deg)' : 'rotate(0deg)',
+        steps: stepObjs, noSteps: idea.steps.length === 0,
+        stepSummary: idea.steps.length ? (done + '/' + idea.steps.length + ' steps') : 'no steps',
+        onToggle: () => this.toggleExpand(idea.id),
+        onRemove: (e) => { e.stopPropagation(); this.removeIdea(idea.id); },
+        stepDraft: this.state.draft.stepText[idea.id] || '',
+        onStepInput: (e) => this.setStepDraft(idea.id, e.target.value),
+        onAddStep: () => this.addStep(idea.id),
+        _score: score,
+      };
+    };
+    const ideasSorted = this.state.ideas.map(decorate).sort((a, b) => b._score - a._score);
+    const topIdeas = ideasSorted.slice(0, 3);
+
+    // skills
+    const skillRows = this.state.skills.map((s, idx) => {
+      const m = this.levelMeta(s.level);
+      return {
+        name: s.name, levelLabel: m.label,
+        badgeStyle: `font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;padding:3px 9px;border-radius:99px;background:${m.bg};color:${m.color}`,
+        earnedLabel: this.fmt(s.earned),
+        pips: [1,2,3].map(lv => ({ bg: lv <= s.level ? '#161412' : '#EDE6D7', onClick: () => this.setLevel(idx, lv) })),
+        onRemove: () => this.removeSkill(idx),
+      };
+    });
+    const skillChips = this.state.skills.map(s => {
+      const m = this.levelMeta(s.level);
+      return { label: s.name + ' · ' + m.label, style: `font-size:13px;font-weight:700;padding:6px 12px;border-radius:99px;background:${m.bg};color:${m.color}` };
+    });
+
+    // opportunities matched to skills present
+    const oppPool = [
+      { title: 'Landing page design', skill: 'Web design', pay: 1200 },
+      { title: 'Email welcome sequence', skill: 'Copywriting', pay: 800 },
+      { title: 'Conference talk', skill: 'Public speaking', pay: 1500 },
+      { title: 'Event photography', skill: 'Photography', pay: 600 },
+    ];
+    const opportunities = oppPool.filter(o => skillNames.includes(o.skill)).map(o => ({
+      title: o.title, skill: o.skill, payLabel: this.fmt(o.pay),
+      onTake: () => this.logOpp(o.title, o.skill, o.pay),
+    }));
+
+    // earnings
+    const emojiFor = (sk) => ({ 'Web design': '🎨', 'Copywriting': '✍️', 'Photography': '📷', 'Public speaking': '🎤' }[sk] || '💰');
+    const earningsList = this.state.earnings.map((e, i, arr) => ({
+      label: e.label, skill: e.skill, date: e.date, amountLabel: '+' + this.fmt(e.amount),
+      emoji: emojiFor(e.skill), border: i === arr.length - 1 ? 'transparent' : '#f0e9da',
+      onRemove: () => this.removeEarning(e.id),
+    }));
+    const recentEarnings = earningsList.slice(0, 3);
+
+    const topName = topIdeas[0] ? topIdeas[0].name : 'your best idea';
+    const topOpp = opportunities[0];
+    const nextMove = topOpp
+      ? `Pitch the ${topOpp.payLabel} ${topOpp.title.toLowerCase()} — it matches ${topOpp.skill}`
+      : `Push "${topName}" forward — it's your highest-scoring idea`;
+
+    return {
+      tabs, accent, userName,
+      isToday: this.state.tab === 'today', isSkills: this.state.tab === 'skills',
+      isIdeas: this.state.tab === 'ideas', isMoney: this.state.tab === 'money',
+      isPlatforms: this.state.tab === 'platforms',
+      platformsList: this.state.platforms.map(p => ({
+        name: p.name, url: p.url, note: p.note,
+        host: (() => { try { return new URL(p.url).hostname.replace(/^www\./, ''); } catch (_) { return p.url; } })(),
+        initial: p.name.charAt(0).toUpperCase(),
+        onRemove: () => this.removePlatform(p.id),
+      })),
+      noPlatforms: this.state.platforms.length === 0,
+      draftPlatName: this.state.draft.platName, onPlatName: (e) => this.setDraft('platName', e.target.value),
+      draftPlatUrl: this.state.draft.platUrl, onPlatUrl: (e) => this.setDraft('platUrl', e.target.value),
+      draftPlatNote: this.state.draft.platNote, onPlatNote: (e) => this.setDraft('platNote', e.target.value),
+      addPlatform: this.addPlatform,
+      initial: userName.charAt(0).toUpperCase(),
+      totalLabel: this.fmt(total), goalLabel: this.fmt(goal), remainingLabel: this.fmt(remaining),
+      pctLabel: pct + '%', pctWidth: pct + '%',
+      topIdeas, ideasSorted, skillRows, skillChips, recentEarnings, earningsList,
+      opportunities, noOpps: opportunities.length === 0, noEarnings: this.state.earnings.length === 0,
+      nextMove, goIdeas: () => this.setState({ tab: 'ideas' }),
+      skillOptions: skillNames,
+      draftSkillName: this.state.draft.skillName, onSkillName: (e) => this.setDraft('skillName', e.target.value), addSkill: this.addSkill,
+      draftIdeaName: this.state.draft.ideaName, onIdeaName: (e) => this.setDraft('ideaName', e.target.value),
+      draftReward: this.state.draft.reward, draftEffort: this.state.draft.effort,
+      rewardUp: () => this.bump('reward', 1), rewardDown: () => this.bump('reward', -1),
+      effortUp: () => this.bump('effort', 1), effortDown: () => this.bump('effort', -1),
+      addIdea: this.addIdea,
+      draftEarnLabel: this.state.draft.earnLabel, onEarnLabel: (e) => this.setDraft('earnLabel', e.target.value),
+      draftEarnSkill: this.state.draft.earnSkill, onEarnSkill: (e) => this.setDraft('earnSkill', e.target.value),
+      draftEarnAmount: this.state.draft.earnAmount, onEarnAmount: (e) => this.setDraft('earnAmount', e.target.value.replace(/[^0-9.]/g, '')),
+      addEarning: this.addEarning,
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Hanken Grotesk',sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</helmet>
+
+<div style="width:max-content;min-width:100%;min-height:100vh;box-sizing:border-box;padding:48px;background:#e7e5df;font-family:'Hanken Grotesk',sans-serif">
+
+  <div style="max-width:760px;margin-bottom:40px">
+    <div style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#8a8780;font-weight:600;margin-bottom:12px">Skills &amp; Money · Dashboard direction studies</div>
+    <h1 style="font-size:30px;line-height:1.15;letter-spacing:-.02em;color:#1b1b18;font-weight:800;margin-bottom:14px">Three directions for tracking skills &amp; turning them into income</h1>
+    <p style="font-size:15px;line-height:1.6;color:#55524b;max-width:620px">Same data and feature set in each — income goal, skills inventory, idea board (effort vs. reward), matched opportunities, and an earnings log. Pick the visual direction that resonates and I'll build it into a full clickable prototype. <strong style="color:#1b1b18">A — Ledger</strong> is calm &amp; minimal · <strong style="color:#1b1b18">B — Vault</strong> is premium fintech · <strong style="color:#1b1b18">C — Hustle</strong> is bold &amp; motivational.</p>
+  </div>
+
+  <div style="display:flex;gap:48px;align-items:flex-start">
+
+    <!-- ============ A · LEDGER (clean minimal) ============ -->
+    <div style="flex:none;width:1020px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+        <span style="font-size:13px;font-weight:700;color:#1b1b18">A · Ledger</span>
+        <span style="font-size:12px;color:#8a8780">Clean &amp; minimal — Notion-like</span>
+      </div>
+      <div style="background:#FCFCFA;border:1px solid #E7E4DC;border-radius:4px;box-shadow:0 1px 3px rgba(0,0,0,.06);overflow:hidden;color:#1b1b18">
+        <!-- topbar -->
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 26px;border-bottom:1px solid #EEEBE3">
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="width:22px;height:22px;border-radius:5px;background:#1b1b18"></div>
+            <span style="font-size:14px;font-weight:700;letter-spacing:-.01em">Workbench</span>
+          </div>
+          <div style="display:flex;gap:22px;font-size:13px;color:#8a8780">
+            <span style="color:#1b1b18;font-weight:600">Overview</span><span>Skills</span><span>Ideas</span><span>Earnings</span>
+          </div>
+          <div style="width:30px;height:30px;border-radius:50%;background:#EDEAE2;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#55524b">M</div>
+        </div>
+
+        <div style="padding:26px">
+          <div style="font-size:13px;color:#8a8780;margin-bottom:2px">Good morning, Maya</div>
+          <div style="font-size:21px;font-weight:700;letter-spacing:-.01em;margin-bottom:22px">You're 47% to your monthly goal</div>
+
+          <!-- goal -->
+          <div style="border:1px solid #EEEBE3;border-radius:6px;padding:20px 22px;margin-bottom:22px">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px">
+              <div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#8a8780;font-weight:600">Monthly income goal</div>
+              <div style="font-family:'Space Mono',monospace;font-size:13px;color:#8a8780"><span style="color:#1b1b18;font-weight:700">$2,340</span> / $5,000</div>
+            </div>
+            <div style="height:8px;background:#EFEDE6;border-radius:99px;overflow:hidden">
+              <div style="width:47%;height:100%;background:#2E7D5B;border-radius:99px"></div>
+            </div>
+            <div style="display:flex;gap:28px;margin-top:16px">
+              <div><div style="font-family:'Space Mono',monospace;font-size:18px;font-weight:700">$2,660</div><div style="font-size:11px;color:#8a8780">to go</div></div>
+              <div><div style="font-family:'Space Mono',monospace;font-size:18px;font-weight:700">12 days</div><div style="font-size:11px;color:#8a8780">left in June</div></div>
+              <div><div style="font-family:'Space Mono',monospace;font-size:18px;font-weight:700;color:#2E7D5B">+$930</div><div style="font-size:11px;color:#8a8780">vs. last month</div></div>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px">
+            <!-- skills -->
+            <div>
+              <div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#8a8780;font-weight:600;margin-bottom:14px">Skills inventory</div>
+              <div style="display:flex;flex-direction:column;gap:13px">
+                <div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:14px;font-weight:500">Web design</span><div style="display:flex;gap:3px">​<span style="width:18px;height:5px;border-radius:2px;background:#1b1b18"></span><span style="width:18px;height:5px;border-radius:2px;background:#1b1b18"></span><span style="width:18px;height:5px;border-radius:2px;background:#1b1b18"></span><span style="width:18px;height:5px;border-radius:2px;background:#1b1b18"></span><span style="width:18px;height:5px;border-radius:2px;background:#E4E1D9"></span></div></div>
+                <div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:14px;font-weight:500">Copywriting</span><div style="display:flex;gap:3px"><span style="width:18px;height:5px;border-radius:2px;background:#1b1b18"></span><span style="width:18px;height:5px;border-radius:2px;background:#1b1b18"></span><span style="width:18px;height:5px;border-radius:2px;background:#1b1b18"></span><span style="width:18px;height:5px;border-radius:2px;background:#E4E1D9"></span><span style="width:18px;height:5px;border-radius:2px;background:#E4E1D9"></span></div></div>
+                <div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:14px;font-weight:500">Public speaking</span><div style="display:flex;gap:3px"><span style="width:18px;height:5px;border-radius:2px;background:#1b1b18"></span><span style="width:18px;height:5px;border-radius:2px;background:#1b1b18"></span><span style="width:18px;height:5px;border-radius:2px;background:#1b1b18"></span><span style="width:18px;height:5px;border-radius:2px;background:#1b1b18"></span><span style="width:18px;height:5px;border-radius:2px;background:#E4E1D9"></span></div></div>
+                <div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:14px;font-weight:500">Photography</span><div style="display:flex;gap:3px"><span style="width:18px;height:5px;border-radius:2px;background:#1b1b18"></span><span style="width:18px;height:5px;border-radius:2px;background:#1b1b18"></span><span style="width:18px;height:5px;border-radius:2px;background:#E4E1D9"></span><span style="width:18px;height:5px;border-radius:2px;background:#E4E1D9"></span><span style="width:18px;height:5px;border-radius:2px;background:#E4E1D9"></span></div></div>
+              </div>
+            </div>
+            <!-- earnings -->
+            <div>
+              <div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#8a8780;font-weight:600;margin-bottom:14px">Recent earnings</div>
+              <div style="display:flex;flex-direction:column">
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid #EEEBE3"><div><div style="font-size:14px;font-weight:500">Logo refresh</div><div style="font-size:11px;color:#8a8780">Web design · Jun 12</div></div><span style="font-family:'Space Mono',monospace;font-size:14px;font-weight:700;color:#2E7D5B">+$450</span></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid #EEEBE3"><div><div style="font-size:14px;font-weight:500">Product copy</div><div style="font-size:11px;color:#8a8780">Copywriting · Jun 9</div></div><span style="font-family:'Space Mono',monospace;font-size:14px;font-weight:700;color:#2E7D5B">+$300</span></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0"><div><div style="font-size:14px;font-weight:500">Headshots</div><div style="font-size:11px;color:#8a8780">Photography · Jun 4</div></div><span style="font-family:'Space Mono',monospace;font-size:14px;font-weight:700;color:#2E7D5B">+$180</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ideas -->
+          <div style="margin-top:24px">
+            <div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#8a8780;font-weight:600;margin-bottom:14px">Idea board · effort vs. reward</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+              <div style="border:1px solid #EEEBE3;border-radius:6px;padding:14px"><div style="font-size:14px;font-weight:600;margin-bottom:10px">Notion template shop</div><div style="font-size:11px;color:#8a8780;margin-bottom:3px">Reward · high</div><div style="font-size:11px;color:#8a8780">Effort · low</div><div style="margin-top:10px;display:inline-block;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;background:#EAF3EE;color:#2E7D5B;padding:2px 8px;border-radius:99px">Score 8.4</div></div>
+              <div style="border:1px solid #EEEBE3;border-radius:6px;padding:14px"><div style="font-size:14px;font-weight:600;margin-bottom:10px">Copywriting retainer</div><div style="font-size:11px;color:#8a8780;margin-bottom:3px">Reward · high</div><div style="font-size:11px;color:#8a8780">Effort · medium</div><div style="margin-top:10px;display:inline-block;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;background:#EAF3EE;color:#2E7D5B;padding:2px 8px;border-radius:99px">Score 7.6</div></div>
+              <div style="border:1px solid #EEEBE3;border-radius:6px;padding:14px"><div style="font-size:14px;font-weight:600;margin-bottom:10px">Brand photo packages</div><div style="font-size:11px;color:#8a8780;margin-bottom:3px">Reward · medium</div><div style="font-size:11px;color:#8a8780">Effort · medium</div><div style="margin-top:10px;display:inline-block;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;background:#F1EFE8;color:#8a8780;padding:2px 8px;border-radius:99px">Score 5.9</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ B · VAULT (premium fintech dark) ============ -->
+    <div style="flex:none;width:1020px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+        <span style="font-size:13px;font-weight:700;color:#1b1b18">B · Vault</span>
+        <span style="font-size:12px;color:#8a8780">Premium fintech — dark &amp; sophisticated</span>
+      </div>
+      <div style="background:#0F1318;border:1px solid #1d2530;border-radius:4px;box-shadow:0 8px 30px rgba(0,0,0,.18);overflow:hidden;color:#EAEEF2;font-family:'Hanken Grotesk',sans-serif">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 26px;border-bottom:1px solid #1d2530">
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="width:22px;height:22px;border-radius:6px;background:#4ADE9E"></div>
+            <span style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;letter-spacing:-.01em">Vault</span>
+          </div>
+          <div style="display:flex;gap:22px;font-size:13px;color:#7E8A98">
+            <span style="color:#EAEEF2;font-weight:600">Overview</span><span>Skills</span><span>Ideas</span><span>Earnings</span>
+          </div>
+          <div style="width:30px;height:30px;border-radius:50%;background:#1b2530;border:1px solid #283341;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#9fb0c0">M</div>
+        </div>
+
+        <div style="padding:26px">
+          <!-- goal hero -->
+          <div style="display:flex;gap:24px;margin-bottom:24px">
+            <div style="flex:1;background:#141A22;border:1px solid #1d2530;border-radius:12px;padding:22px">
+              <div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#7E8A98;font-weight:600;margin-bottom:14px">Monthly goal</div>
+              <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:4px"><span style="font-family:'Space Grotesk',sans-serif;font-size:34px;font-weight:700;letter-spacing:-.02em">$2,340</span><span style="font-size:14px;color:#7E8A98">/ $5,000</span></div>
+              <div style="height:6px;background:#0F1318;border-radius:99px;overflow:hidden;margin:14px 0 10px"><div style="width:47%;height:100%;background:#4ADE9E;border-radius:99px;box-shadow:0 0 12px rgba(74,222,158,.5)"></div></div>
+              <div style="font-size:13px;color:#7E8A98">47% there · <span style="color:#4ADE9E;font-weight:600">+$930</span> vs. last month</div>
+            </div>
+            <div style="width:280px;background:#141A22;border:1px solid #1d2530;border-radius:12px;padding:22px">
+              <div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#7E8A98;font-weight:600;margin-bottom:16px">Top opportunities</div>
+              <div style="display:flex;flex-direction:column;gap:14px">
+                <div style="display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:13px;font-weight:600">Landing page design</div><div style="font-size:11px;color:#7E8A98">matches Web design</div></div><span style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:#4ADE9E">$1,200</span></div>
+                <div style="display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:13px;font-weight:600">Email sequence</div><div style="font-size:11px;color:#7E8A98">matches Copywriting</div></div><span style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:#4ADE9E">$800</span></div>
+                <div style="display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:13px;font-weight:600">Event photography</div><div style="font-size:11px;color:#7E8A98">matches Photography</div></div><span style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:#4ADE9E">$600</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+            <div style="background:#141A22;border:1px solid #1d2530;border-radius:12px;padding:22px">
+              <div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#7E8A98;font-weight:600;margin-bottom:16px">Skills</div>
+              <div style="display:flex;flex-direction:column;gap:14px">
+                <div><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px"><span style="font-weight:500">Web design</span><span style="color:#7E8A98">Advanced</span></div><div style="height:5px;background:#0F1318;border-radius:99px;overflow:hidden"><div style="width:80%;height:100%;background:#4ADE9E"></div></div></div>
+                <div><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px"><span style="font-weight:500">Public speaking</span><span style="color:#7E8A98">Advanced</span></div><div style="height:5px;background:#0F1318;border-radius:99px;overflow:hidden"><div style="width:80%;height:100%;background:#4ADE9E"></div></div></div>
+                <div><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px"><span style="font-weight:500">Copywriting</span><span style="color:#7E8A98">Intermediate</span></div><div style="height:5px;background:#0F1318;border-radius:99px;overflow:hidden"><div style="width:60%;height:100%;background:#4ADE9E"></div></div></div>
+                <div><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px"><span style="font-weight:500">Photography</span><span style="color:#7E8A98">Beginner</span></div><div style="height:5px;background:#0F1318;border-radius:99px;overflow:hidden"><div style="width:40%;height:100%;background:#4ADE9E"></div></div></div>
+              </div>
+            </div>
+            <div style="background:#141A22;border:1px solid #1d2530;border-radius:12px;padding:22px">
+              <div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#7E8A98;font-weight:600;margin-bottom:16px">Idea board</div>
+              <div style="display:flex;flex-direction:column;gap:12px">
+                <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:12px;border-bottom:1px solid #1d2530"><div><div style="font-size:14px;font-weight:600">Notion template shop</div><div style="font-size:11px;color:#7E8A98">High reward · low effort</div></div><span style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;color:#4ADE9E">8.4</span></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:12px;border-bottom:1px solid #1d2530"><div><div style="font-size:14px;font-weight:600">Copywriting retainer</div><div style="font-size:11px;color:#7E8A98">High reward · medium effort</div></div><span style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;color:#4ADE9E">7.6</span></div>
+                <div style="display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:14px;font-weight:600">Brand photo packages</div><div style="font-size:11px;color:#7E8A98">Medium reward · medium effort</div></div><span style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;color:#9fb0c0">5.9</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ C · HUSTLE (bold motivational/playful) ============ -->
+    <div style="flex:none;width:1020px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+        <span style="font-size:13px;font-weight:700;color:#1b1b18">C · Hustle</span>
+        <span style="font-size:12px;color:#8a8780">Bold &amp; motivational — playful color</span>
+      </div>
+      <div style="background:#FBF4E9;border:1px solid #1614120f;border-radius:4px;box-shadow:0 1px 3px rgba(0,0,0,.08);overflow:hidden;color:#161412">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 26px;border-bottom:2px solid #161412">
+          <span style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;letter-spacing:-.02em">HUSTLE</span>
+          <div style="display:flex;gap:20px;font-size:13px;font-weight:600;color:#7a7468">
+            <span style="color:#161412">Today</span><span>Skills</span><span>Ideas</span><span>Money</span>
+          </div>
+          <div style="width:30px;height:30px;border-radius:50%;background:#FF5C2B;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff">M</div>
+        </div>
+
+        <div style="padding:26px">
+          <!-- goal hero -->
+          <div style="background:#1F3FE0;border-radius:16px;padding:24px;color:#fff;margin-bottom:20px;position:relative;overflow:hidden">
+            <div style="font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;opacity:.8;margin-bottom:8px">Keep going, Maya 🔥</div>
+            <div style="display:flex;align-items:flex-end;justify-content:space-between">
+              <div>
+                <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:46px;font-weight:800;line-height:1;letter-spacing:-.03em">$2,340</div>
+                <div style="font-size:14px;opacity:.85;margin-top:6px">of your $5,000 June goal — almost halfway!</div>
+              </div>
+              <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:54px;font-weight:800;letter-spacing:-.03em">47%</div>
+            </div>
+            <div style="height:10px;background:rgba(255,255,255,.25);border-radius:99px;overflow:hidden;margin-top:18px"><div style="width:47%;height:100%;background:#FFE14D;border-radius:99px"></div></div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1.1fr .9fr;gap:18px;margin-bottom:18px">
+            <!-- ideas -->
+            <div style="background:#fff;border:2px solid #161412;border-radius:14px;padding:20px">
+              <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:700;margin-bottom:14px">💡 Best ideas right now</div>
+              <div style="display:flex;flex-direction:column;gap:12px">
+                <div style="display:flex;align-items:center;justify-content:space-between;background:#FFF3D6;border-radius:10px;padding:12px 14px"><div><div style="font-size:14px;font-weight:700">Notion template shop</div><div style="font-size:11px;color:#7a7468;font-weight:600">High reward · low effort</div></div><div style="font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:#1F3FE0">8.4</div></div>
+                <div style="display:flex;align-items:center;justify-content:space-between;background:#E6F7EC;border-radius:10px;padding:12px 14px"><div><div style="font-size:14px;font-weight:700">Copywriting retainer</div><div style="font-size:11px;color:#7a7468;font-weight:600">High reward · medium effort</div></div><div style="font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:#1F8A4C">7.6</div></div>
+                <div style="display:flex;align-items:center;justify-content:space-between;background:#FCE9E1;border-radius:10px;padding:12px 14px"><div><div style="font-size:14px;font-weight:700">Brand photo packages</div><div style="font-size:11px;color:#7a7468;font-weight:600">Medium reward · medium effort</div></div><div style="font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:#FF5C2B">5.9</div></div>
+              </div>
+            </div>
+            <!-- skills -->
+            <div style="background:#fff;border:2px solid #161412;border-radius:14px;padding:20px">
+              <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:700;margin-bottom:14px">⚡ Your skills</div>
+              <div style="display:flex;flex-wrap:wrap;gap:8px">
+                <span style="font-size:13px;font-weight:700;background:#161412;color:#fff;padding:6px 12px;border-radius:99px">Web design · Pro</span>
+                <span style="font-size:13px;font-weight:700;background:#161412;color:#fff;padding:6px 12px;border-radius:99px">Public speaking · Pro</span>
+                <span style="font-size:13px;font-weight:700;background:#FFE14D;color:#161412;padding:6px 12px;border-radius:99px">Copywriting · Mid</span>
+                <span style="font-size:13px;font-weight:700;background:#FFE14D;color:#161412;padding:6px 12px;border-radius:99px">Spanish · Mid</span>
+                <span style="font-size:13px;font-weight:700;background:#F1ECE0;color:#7a7468;padding:6px 12px;border-radius:99px">Photography · New</span>
+              </div>
+              <div style="margin-top:18px;font-size:12px;font-weight:700;color:#7a7468;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">Banked this month</div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:600"><span>Logo refresh</span><span style="color:#1F8A4C;font-weight:800">+$450</span></div>
+                <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:600"><span>Product copy</span><span style="color:#1F8A4C;font-weight:800">+$300</span></div>
+                <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:600"><span>Headshots</span><span style="color:#1F8A4C;font-weight:800">+$180</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- next action -->
+          <div style="background:#161412;border-radius:14px;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;color:#fff">
+            <div><div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#FFE14D;margin-bottom:4px">Next move</div><div style="font-size:15px;font-weight:600">Pitch the $1,200 landing page gig — it matches your top skill</div></div>
+            <span style="font-family:'Bricolage Grotesque',sans-serif;font-size:14px;font-weight:700;background:#FF5C2B;padding:10px 18px;border-radius:99px">Take it →</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</x-dc>
+</body>
+</html>
