@@ -57,10 +57,18 @@ class HustleApp {
         { id: 'p4', name: 'Substack', url: 'https://substack.com', note: 'Paid newsletter' },
       ],
       expanded: 'i1',
+      calPeriod: 'weekly',
+      calGoals: {
+        daily:     [],
+        weekly:    [],
+        quarterly: [],
+        yearly:    [],
+      },
       draft: {
         skillName: '', ideaName: '', reward: 4, effort: 2,
         earnLabel: '', earnSkill: 'Web design', earnAmount: '',
         stepText: {}, platName: '', platUrl: '', platNote: '',
+        calText: '', calAmount: '',
       },
       seq: 100,
     };
@@ -192,6 +200,43 @@ class HustleApp {
     }));
   }
 
+  setCalPeriod(p) { this.setState({ calPeriod: p }); }
+  addCalGoal() {
+    const d = this.state.draft;
+    const text = d.calText.trim();
+    if (!text) return;
+    const p = this.state.calPeriod;
+    const id = 'cg' + (this.state.seq + 1);
+    const isProgress = p === 'quarterly' || p === 'yearly';
+    const goal = isProgress
+      ? { id, text, target: parseFloat(d.calAmount) || 0, current: 0 }
+      : { id, text, done: false };
+    this.setState(s => ({
+      seq: s.seq + 1,
+      calGoals: { ...s.calGoals, [p]: [...s.calGoals[p], goal] },
+      draft: { ...s.draft, calText: '', calAmount: '' },
+    }));
+  }
+  removeCalGoal(id) {
+    const p = this.state.calPeriod;
+    this.setState(s => ({
+      calGoals: { ...s.calGoals, [p]: s.calGoals[p].filter(g => g.id !== id) },
+    }));
+  }
+  toggleCalGoal(id) {
+    const p = this.state.calPeriod;
+    this.setState(s => ({
+      calGoals: { ...s.calGoals, [p]: s.calGoals[p].map(g => g.id === id ? { ...g, done: !g.done } : g) },
+    }));
+  }
+  setCalProgress(id, val) {
+    const p = this.state.calPeriod;
+    const num = parseFloat(val) || 0;
+    this.setState(s => ({
+      calGoals: { ...s.calGoals, [p]: s.calGoals[p].map(g => g.id === id ? { ...g, current: Math.max(0, num) } : g) },
+    }));
+  }
+
   addPlatform() {
     const d = this.state.draft;
     const name = d.platName.trim();
@@ -234,7 +279,7 @@ class HustleApp {
     const pct = Math.max(0, Math.min(100, Math.round((total / goal) * 100)));
     const remaining = Math.max(0, goal - total);
 
-    const tabs = [['today','Today'],['skills','Skills'],['ideas','Ideas'],['platforms','Platforms'],['money','Money']];
+    const tabs = [['today','Today'],['skills','Skills'],['ideas','Ideas'],['platforms','Platforms'],['calendar','Calendar'],['money','Money']];
     const tabsHTML = tabs.map(([key, label]) => {
       const active = s.tab === key;
       return `<button onclick="app.setTab(${this.jstr(key)})" style="font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;border:none;border-radius:99px;padding:7px 16px;background:${active ? '#161412' : 'transparent'};color:${active ? '#fff' : '#7a7468'}">${label}</button>`;
@@ -278,6 +323,7 @@ class HustleApp {
     else if (s.tab === 'skills') tabContent = this.skillsHTML(opps);
     else if (s.tab === 'ideas') tabContent = this.ideasHTML(decIdeas, accent);
     else if (s.tab === 'platforms') tabContent = this.platformsHTML();
+    else if (s.tab === 'calendar') tabContent = this.calendarHTML(accent);
     else if (s.tab === 'money') tabContent = this.moneyHTML(accent, total, goal, remaining, earningsList);
 
     return `<div style="min-height:100vh;background:#FBF4E9">
@@ -538,6 +584,107 @@ class HustleApp {
 </div>`;
   }
 
+  calendarHTML(accent) {
+    const s = this.state;
+    const p = s.calPeriod;
+    const goals = s.calGoals[p];
+    const isProgress = p === 'quarterly' || p === 'yearly';
+
+    const now = new Date();
+    const periods = [
+      ['daily',     'Daily'],
+      ['weekly',    'Weekly'],
+      ['quarterly', 'Quarterly'],
+      ['yearly',    'Yearly'],
+    ];
+    const periodTabs = periods.map(([key, label]) => {
+      const active = p === key;
+      return `<button onclick="app.setCalPeriod(${this.jstr(key)})" style="font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;border:2px solid #161412;border-radius:10px;padding:9px 20px;background:${active ? '#161412' : '#fff'};color:${active ? '#fff' : '#161412'}">${label}</button>`;
+    }).join('');
+
+    // Period label + context line
+    const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const today = `${dayNames[now.getDay()]}, ${monthNames[now.getMonth()]} ${now.getDate()}`;
+    const weekStart = new Date(now); weekStart.setDate(now.getDate() - now.getDay());
+    const weekEnd = new Date(weekStart); weekEnd.setDate(weekStart.getDate() + 6);
+    const quarter = Math.ceil((now.getMonth() + 1) / 3);
+    const weekRange = `Week of ${monthNames[weekStart.getMonth()]} ${weekStart.getDate()} – ${monthNames[weekEnd.getMonth()]} ${weekEnd.getDate()}`;
+    const context = { daily: today, weekly: weekRange, quarterly: `Q${quarter} · ${now.getFullYear()}`, yearly: String(now.getFullYear()) }[p];
+
+    // Add form
+    const addForm = `<div style="background:#fff;border:2px solid #161412;border-radius:16px;padding:18px;margin-bottom:18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+      <input data-uid="cal-text" value="${this.esc(s.draft.calText)}" oninput="app.setDraft('calText',this.value)" onkeydown="if(event.key==='Enter')app.addCalGoal()" placeholder="${isProgress ? 'Goal name…' : 'What to accomplish…'}" style="flex:1;min-width:200px;font-family:inherit;font-size:15px;font-weight:600;background:#FBF4E9;border:2px solid #161412;border-radius:10px;padding:11px 14px"/>
+      ${isProgress ? `<div style="display:flex;align-items:center;background:#FBF4E9;border:2px solid #161412;border-radius:10px;padding:0 14px"><span style="font-weight:800;font-size:15px">$</span><input data-uid="cal-amount" value="${this.esc(s.draft.calAmount)}" oninput="app.setDraft('calAmount',this.value.replace(/[^0-9.]/g,''))" inputmode="numeric" placeholder="Target" style="width:100px;font-family:inherit;font-size:15px;font-weight:700;background:none;border:none;padding:11px 6px"/></div>` : ''}
+      <button onclick="app.addCalGoal()" style="font-family:'Bricolage Grotesque',sans-serif;font-size:14px;font-weight:700;background:#161412;color:#fff;border:none;padding:12px 22px;border-radius:10px;cursor:pointer">Add goal</button>
+    </div>`;
+
+    // Goals list
+    let goalsHTML = '';
+    if (goals.length === 0) {
+      goalsHTML = `<div style="background:#fff;border:2px dashed #d9cdb4;border-radius:16px;padding:34px;text-align:center;font-size:14px;color:#a39c8e;font-weight:600">No goals yet for this period — add your first above.</div>`;
+    } else if (isProgress) {
+      goalsHTML = goals.map(g => {
+        const pct = g.target > 0 ? Math.min(100, Math.round((g.current / g.target) * 100)) : 0;
+        const barColor = pct >= 100 ? '#1F8A4C' : pct >= 50 ? accent : '#FF5C2B';
+        return `<div style="background:#fff;border:2px solid #161412;border-radius:16px;padding:20px 22px">
+          <div style="display:flex;align-items:start;justify-content:space-between;margin-bottom:14px">
+            <div>
+              <div style="font-size:16px;font-weight:700">${this.esc(g.text)}</div>
+              ${g.target > 0 ? `<div style="font-size:12px;color:#7a7468;font-weight:600;margin-top:2px">Target: ${this.fmt(g.target)}</div>` : ''}
+            </div>
+            <div style="display:flex;align-items:center;gap:10px">
+              <span style="font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;color:${barColor}">${pct}%</span>
+              <button onclick="app.removeCalGoal(${this.jstr(g.id)})" class="btn-x" style="width:30px;height:30px;border-radius:9px;font-size:16px">×</button>
+            </div>
+          </div>
+          <div style="height:10px;background:#F1ECE0;border-radius:99px;overflow:hidden;margin-bottom:12px">
+            <div style="height:100%;background:${barColor};border-radius:99px;width:${pct}%;transition:width .3s ease"></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="font-size:13px;font-weight:600;color:#7a7468">Update progress:</span>
+            <div style="display:flex;align-items:center;background:#FBF4E9;border:2px solid #d9cdb4;border-radius:9px;padding:0 10px">
+              <span style="font-weight:800">$</span>
+              <input data-uid="cal-prog-${this.esc(g.id)}" value="${g.current}" oninput="app.setCalProgress(${this.jstr(g.id)},this.value)" inputmode="numeric" style="width:80px;font-family:inherit;font-size:14px;font-weight:700;background:none;border:none;padding:8px 6px"/>
+            </div>
+          </div>
+        </div>`;
+      }).join('');
+    } else {
+      const done = goals.filter(g => g.done).length;
+      const progressPct = goals.length ? Math.round((done / goals.length) * 100) : 0;
+      const summary = `<div style="background:#fff;border:2px solid #161412;border-radius:14px;padding:16px 20px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between">
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#7a7468;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Progress</div>
+          <div style="height:8px;width:220px;background:#F1ECE0;border-radius:99px;overflow:hidden">
+            <div style="height:100%;background:${progressPct===100?'#1F8A4C':accent};border-radius:99px;width:${progressPct}%;transition:width .3s ease"></div>
+          </div>
+        </div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:30px;font-weight:800;color:${progressPct===100?'#1F8A4C':accent}">${done}/${goals.length}</div>
+      </div>`;
+      const items = goals.map(g => `
+        <div style="background:#fff;border:2px solid ${g.done ? '#E6F7EC' : '#161412'};border-radius:14px;padding:16px 18px;display:flex;align-items:center;gap:14px">
+          <div onclick="app.toggleCalGoal(${this.jstr(g.id)})" style="width:26px;height:26px;border-radius:8px;border:2px solid #161412;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;cursor:pointer;flex:none;background:${g.done ? '#1F8A4C' : '#fff'};color:${g.done ? '#fff' : 'transparent'}">${g.done ? '✓' : ''}</div>
+          <span onclick="app.toggleCalGoal(${this.jstr(g.id)})" style="flex:1;font-size:15px;font-weight:${g.done ? '600' : '700'};color:${g.done ? '#a39c8e' : '#161412'};text-decoration:${g.done ? 'line-through' : 'none'};cursor:pointer">${this.esc(g.text)}</span>
+          <button onclick="app.removeCalGoal(${this.jstr(g.id)})" class="btn-x" style="width:30px;height:30px;flex:none;border-radius:9px;font-size:16px">×</button>
+        </div>`).join('');
+      goalsHTML = summary + `<div style="display:flex;flex-direction:column;gap:10px">${items}</div>`;
+    }
+
+    return `<div>
+  <div style="margin-bottom:22px">
+    <h1 style="font-family:'Bricolage Grotesque',sans-serif;font-size:28px;font-weight:800;letter-spacing:-.02em">Goal Calendar</h1>
+    <p style="font-size:14px;color:#7a7468;margin-top:4px">Track what you need to hit — daily, weekly, quarterly, and yearly.</p>
+  </div>
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:22px">
+    <div style="display:flex;gap:8px;flex-wrap:wrap">${periodTabs}</div>
+    <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:700;color:#7a7468">${this.esc(context)}</div>
+  </div>
+  ${addForm}
+  ${goalsHTML}
+</div>`;
+  }
+
   moneyHTML(accent, total, goal, remaining, earningsList) {
     const s = this.state;
     const skillOptions = s.skills.map(sk =>
@@ -594,7 +741,7 @@ class HustleApp {
   }
 }
 
-const app = new HustleApp();
+window.app = new HustleApp();
 </script>
 </body>
 </html>
